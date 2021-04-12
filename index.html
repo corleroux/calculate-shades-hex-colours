@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Changing Color Luminosity in JavaScript</title>
+</head>
+<body>
+<style>
+body
+{
+	font-family: arial, helvetica, freesans, sans-serif;
+	font-size: 100%;
+	color: #333;
+	background-color: #ddd;
+}
+
+h1
+{
+	font-size: 1.5em;
+	font-weight: normal;
+	margin: 0;
+}
+
+#out
+{
+	width: 400px;
+	height: 50px;
+	margin: 20px auto;
+	border: 2px solid #fff;
+}
+
+#out div
+{
+	float: left;
+	width: 4px;
+	height: 50px;
+	margin: 0;
+}
+</style>
+
+<h1>Changing Color Luminosity in JavaScript</h1>
+
+<p>This page uses a ColorLuminance() function programmatically generate darker or lighter hex colors in JavaScript. All code is contained in the source of this page.</p>
+
+<div id="out"></div>
+
+<p>For more information, please please refer to:<br />
+<a href="http://blogs.sitepoint.com/javascript-generate-lighter-darker-color/">How to Calculate Lighter or Darker Hex Colors in JavaScript</a></p>
+
+<p>This example code was developed by <a href="http://twitter.com/craigbuckler">Craig Buckler</a> of <a href="http://optimalworks.net/">OptimalWorks.net</a> for <a href="http://sitepoint.com/">SitePoint.com</a>.</p>
+
+<p>It can be used without any restrictions but please don't expect 24/7 support! A link back to <a href="http://www.sitepoint.com/">SitePoint.com</a> is appreciated.</p>
+
+<script>
+
+// return lighter (+lum) or darker (-lum) color as a hex string
+// pass original hex string and luminosity factor, e.g. -0.1 = 10% darker
+function ColorLuminance(hex, lum) {
+
+	// validate hex string
+	hex = String(hex).replace(/[^0-9a-f]/gi, '');
+	if (hex.length < 6) {
+		hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+	}
+	lum = lum || 0;
+	
+	// convert to decimal and change luminosity
+	var rgb = "#", c, i;
+	for (i = 0; i < 3; i++) {
+		c = parseInt(hex.substr(i*2,2), 16);
+		c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
+		rgb += ("00"+c).substr(c.length);
+	}
+
+	return rgb;
+}
+
+
+var	color = "#905030",
+	lum = 0.05,
+	out = document.getElementById("out");
+
+var i, c, nc;
+	
+for (var i = 0; i < 100; i++) {
+	var c = out.appendChild(document.createElement("div"));
+	nc = ColorLuminance(color, i*lum);
+	c.style.backgroundColor = nc;
+	c.title = nc;
+}
+
+</script>
+
+</body>
+</html>
